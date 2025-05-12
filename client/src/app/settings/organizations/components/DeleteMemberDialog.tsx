@@ -46,6 +46,7 @@ export function DeleteMemberDialog({
       <DialogTrigger asChild>
         <Button size="sm" variant="ghost" className="text-destructive">
           <UserPlus className="h-4 w-4" />
+          <span>Delete {member.user.name}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">

@@ -23,6 +23,8 @@ import {
   useUserOrganizations,
 } from "../../../api/admin/organizations";
 import { NoOrganization } from "../../../components/NoOrganization";
+import { Button } from "../../../components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
 import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 import { AddMemberDialog } from "./components/AddMemberDialog";
 import { DeleteMemberDialog } from "./components/DeleteMemberDialog";
@@ -141,19 +143,28 @@ function Organization({ org }: { org: UserOrganization }) {
                   {isOwner && (
                     <TableCell>
                       {member.role !== "owner" && (
-                        <div className="flex items-center space-x-2">
-                          <RemoveMemberDialog
-                            member={member}
-                            organizationId={org.id}
-                            onSuccess={handleRefresh}
-                          />
-
-                          <DeleteMemberDialog
-                            member={member}
-                            organizationId={org.id}
-                            onSuccess={handleRefresh}
-                          />
-                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="outline">Actions</Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-56">
+                            <DropdownMenuItem>
+                              <RemoveMemberDialog
+                                member={member}
+                                organizationId={org.id}
+                                onSuccess={handleRefresh}
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <DeleteMemberDialog
+                                member={member}
+                                organizationId={org.id}
+                                onSuccess={handleRefresh}
+                              />
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       )}
                     </TableCell>
                   )}

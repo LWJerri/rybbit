@@ -1,16 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-import { DialogContent } from "@/components/ui/dialog";
-import { DialogHeader } from "@/components/ui/dialog";
-import { DialogTitle } from "@/components/ui/dialog";
-import { DialogTrigger } from "@/components/ui/dialog";
-import { DialogFooter } from "@/components/ui/dialog";
-import { DialogDescription } from "@/components/ui/dialog";
-import { UserMinus } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth";
+import { UserMinus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Member } from "../page";
 
@@ -52,6 +46,7 @@ export function RemoveMemberDialog({
       <DialogTrigger asChild>
         <Button size="sm" variant="ghost" className="text-destructive">
           <UserMinus className="h-4 w-4" />
+          <span>Remove {member.user.name} from organization</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
