@@ -44,7 +44,7 @@ export function DeleteMemberDialog({
   };
 
   return (
-    <Dialog open={isOpenDialog} onOpenChange={setOpenDialog}>
+    <Dialog open={isOpenDialog} onOpenChange={setOpenDialog} modal>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Delete Member</DialogTitle>
