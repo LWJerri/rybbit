@@ -46,7 +46,7 @@ export function RemoveMemberDialog({
       <DialogTrigger asChild>
         <Button size="sm" variant="ghost" className="text-destructive">
           <UserMinus className="h-4 w-4" />
-          <span>Remove {member.user.name} from organization</span>
+          <span>Remove member</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
