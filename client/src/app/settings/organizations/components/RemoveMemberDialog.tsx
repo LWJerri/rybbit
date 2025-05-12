@@ -34,7 +34,7 @@ export function RemoveMemberDialog({
       });
 
       toast.success("Member removed successfully");
-      setOpenDialog(false);
+      // setOpenDialog(false);
       onSuccess();
     } catch (error: any) {
       toast.error(error.message || "Failed to remove member");
