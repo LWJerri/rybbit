@@ -43,7 +43,7 @@ export function RemoveMemberDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} modal>
       <DialogTrigger asChild>
         <DropdownMenuItem className="text-destructive">
           <UserMinus className="h-4 w-4" />
