@@ -17,7 +17,6 @@ import {
 import { authClient } from "../../../lib/auth";
 
 // Import the separated dialog components
-import { useEffect, useState } from "react";
 import { useOrganizationMembers } from "../../../api/admin/auth";
 import {
   UserOrganization,
@@ -25,7 +24,7 @@ import {
 } from "../../../api/admin/organizations";
 import { NoOrganization } from "../../../components/NoOrganization";
 import { Button } from "../../../components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
 import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 import { AddMemberDialog } from "./components/AddMemberDialog";
 import { DeleteMemberDialog } from "./components/DeleteMemberDialog";
@@ -58,22 +57,6 @@ export type Member = {
 // Organization Component with Members Table
 function Organization({ org }: { org: UserOrganization }) {
   const { data: members, refetch } = useOrganizationMembers(org.id);
-
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  const [isRemoveMemberDialogOpen, setIsRemoveMemberDialogOpen] = useState(false);
-  const [isDeleteMemberDialogOpen, setIsDeleteMemberDialogOpen] = useState(false);
-
-  useEffect(() => {
-    if(isRemoveMemberDialogOpen) return;
-
-    setSelectedMember(null);
-  }, [isRemoveMemberDialogOpen]);
-
-  useEffect(() => {
-    if(isDeleteMemberDialogOpen) return;
-
-    setSelectedMember(null);
-  }, [isDeleteMemberDialogOpen]);
 
   // const { data: invitations, refetch: refetchInvitations } = useQuery({
   //   queryKey: ["invitations", org.id],
@@ -162,24 +145,20 @@ function Organization({ org }: { org: UserOrganization }) {
                       {member.role !== "owner" && (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="outline">Actions</Button>
+                            <Button variant="outline">Open</Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent className="w-56">
-          <RemoveMemberDialog
-            member={member}
-            organizationId={org.id}
-            isModalOpen={isRemoveMemberDialogOpen}
-            setIsModalOpen={setIsRemoveMemberDialogOpen}
-            onSuccess={handleRefresh}
-          />
-
-          <DeleteMemberDialog
-            member={member}
-            organizationId={org.id}
-            isModalOpen={isDeleteMemberDialogOpen}
-            setIsModalOpen={setIsDeleteMemberDialogOpen}
-            onSuccess={handleRefresh}
-          />
+                            <RemoveMemberDialog
+                              member={member}
+                              organizationId={org.id}
+                              onSuccess={handleRefresh}
+                            />
+                            <DropdownMenuSeparator />
+                            <DeleteMemberDialog
+                              member={member}
+                              organizationId={org.id}
+                              onSuccess={handleRefresh}
+                            />
                           </DropdownMenuContent>
                         </DropdownMenu>
                       )}
