@@ -17,6 +17,8 @@ import {
 import { authClient } from "../../../lib/auth";
 
 // Import the separated dialog components
+import { Trash, UserMinus } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { useOrganizationMembers } from "../../../api/admin/auth";
 import {
   UserOrganization,
@@ -24,7 +26,7 @@ import {
 } from "../../../api/admin/organizations";
 import { NoOrganization } from "../../../components/NoOrganization";
 import { Button } from "../../../components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu";
 import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 import { AddMemberDialog } from "./components/AddMemberDialog";
 import { DeleteMemberDialog } from "./components/DeleteMemberDialog";
@@ -57,6 +59,26 @@ export type Member = {
 // Organization Component with Members Table
 function Organization({ org }: { org: UserOrganization }) {
   const { data: members, refetch } = useOrganizationMembers(org.id);
+
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [isRemoveMemberDialogOpen, setIsRemoveMemberDialogOpen] = useState(false);
+  const [isDeleteMemberDialogOpen, setIsDeleteMemberDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if(isRemoveMemberDialogOpen || isDeleteMemberDialogOpen) return
+
+    setSelectedMember(null);
+  }, [isRemoveMemberDialogOpen, isDeleteMemberDialogOpen]);
+
+  const handleRemoveMemberClick = useCallback((member: Member) => {
+    setSelectedMember(member);
+    setIsRemoveMemberDialogOpen(true);
+  }, []);
+
+  const handleDeleteMemberClick = useCallback((member: Member) => {
+    setSelectedMember(member);
+    setIsDeleteMemberDialogOpen(true);
+  }, []);
 
   // const { data: invitations, refetch: refetchInvitations } = useQuery({
   //   queryKey: ["invitations", org.id],
@@ -148,17 +170,15 @@ function Organization({ org }: { org: UserOrganization }) {
                             <Button variant="outline">Open</Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent className="w-56">
-                            <RemoveMemberDialog
-                              member={member}
-                              organizationId={org.id}
-                              onSuccess={handleRefresh}
-                            />
+                            <DropdownMenuItem className="text-destructive" onClick={() => handleRemoveMemberClick(member)}>
+                              <UserMinus className="h-4 w-4" />
+                              <span>Remove member</span>
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DeleteMemberDialog
-                              member={member}
-                              organizationId={org.id}
-                              onSuccess={handleRefresh}
-                            />
+                            <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteMemberClick(member)}>
+                              <Trash className="h-4 w-4" />
+                              <span>Delete member</span>
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       )}
@@ -180,6 +200,26 @@ function Organization({ org }: { org: UserOrganization }) {
           </Table>
         </CardContent>
       </Card>
+
+      {selectedMember && (
+        <>
+          <RemoveMemberDialog
+            member={selectedMember}
+            organizationId={org.id}
+            isOpenDialog={isRemoveMemberDialogOpen}
+            setOpenDialog={setIsRemoveMemberDialogOpen}
+            onSuccess={handleRefresh}
+          />
+
+          <DeleteMemberDialog
+            member={selectedMember}
+            organizationId={org.id}
+            isOpenDialog={isDeleteMemberDialogOpen}
+            setOpenDialog={setIsDeleteMemberDialogOpen}
+            onSuccess={handleRefresh}
+          />
+        </>
+      )}
       {/* Disabled for now. We aren't using this */}
       {/* 
       <Card className="w-full">

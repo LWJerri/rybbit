@@ -1,27 +1,28 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth";
-import { UserMinus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DropdownMenuItem } from "../../../../components/ui/dropdown-menu";
 import { Member } from "../page";
 
 interface RemoveMemberDialogProps {
   member: Member;
   organizationId: string;
+  isOpenDialog: boolean;
+  setOpenDialog: (open: boolean) => void;
   onSuccess: () => void;
 }
 
 export function RemoveMemberDialog({
   member,
   organizationId,
+  isOpenDialog,
+  setOpenDialog,
   onSuccess,
 }: RemoveMemberDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const handleRemove = async () => {
     setIsLoading(true);
@@ -33,7 +34,7 @@ export function RemoveMemberDialog({
       });
 
       toast.success("Member removed successfully");
-      setOpen(false);
+      setOpenDialog(false);
       onSuccess();
     } catch (error: any) {
       toast.error(error.message || "Failed to remove member");
@@ -43,13 +44,7 @@ export function RemoveMemberDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen} modal>
-      <DialogTrigger asChild>
-        <DropdownMenuItem className="text-destructive">
-          <UserMinus className="h-4 w-4" />
-          <span>Remove member</span>
-        </DropdownMenuItem>
-      </DialogTrigger>
+    <Dialog open={isOpenDialog} onOpenChange={setOpenDialog}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Remove Member</DialogTitle>
@@ -65,7 +60,7 @@ export function RemoveMemberDialog({
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="outline" onClick={() => setOpenDialog(false)}>
             Cancel
           </Button>
           <Button
