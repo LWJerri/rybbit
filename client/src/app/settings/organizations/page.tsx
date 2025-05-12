@@ -18,7 +18,7 @@ import { authClient } from "../../../lib/auth";
 
 // Import the separated dialog components
 import { Trash, UserMinus } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useOrganizationMembers } from "../../../api/admin/auth";
 import {
   UserOrganization,
@@ -64,12 +64,6 @@ function Organization({ org }: { org: UserOrganization }) {
   const [isRemoveMemberDialogOpen, setIsRemoveMemberDialogOpen] = useState(false);
   const [isDeleteMemberDialogOpen, setIsDeleteMemberDialogOpen] = useState(false);
 
-  useEffect(() => {
-    if(isRemoveMemberDialogOpen || isDeleteMemberDialogOpen) return
-
-    setSelectedMember(null);
-  }, [isRemoveMemberDialogOpen, isDeleteMemberDialogOpen]);
-
   const handleRemoveMemberClick = useCallback((member: Member) => {
     setSelectedMember(member);
     setIsRemoveMemberDialogOpen(true);
@@ -104,6 +98,8 @@ function Organization({ org }: { org: UserOrganization }) {
   );
 
   const handleRefresh = () => {
+    setSelectedMember(null);
+
     refetch();
     // refetchInvitations();
   };
