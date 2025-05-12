@@ -139,9 +139,9 @@ function Organization({ org }: { org: UserOrganization }) {
                     )}
                   </TableCell>
                   {isOwner && (
-                    <TableCell className="text-right">
+                    <TableCell>
                       {member.role !== "owner" && (
-                        <>
+                        <div className="flex items-center space-x-2">
                           <RemoveMemberDialog
                             member={member}
                             organizationId={org.id}
@@ -153,7 +153,7 @@ function Organization({ org }: { org: UserOrganization }) {
                             organizationId={org.id}
                             onSuccess={handleRefresh}
                           />
-                        </>
+                        </div>
                       )}
                     </TableCell>
                   )}
