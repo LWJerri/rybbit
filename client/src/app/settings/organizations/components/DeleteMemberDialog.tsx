@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth";
-import { UserPlus } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Member } from "../page";
@@ -44,8 +44,8 @@ export function DeleteMemberDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="text-destructive">
-          <UserPlus className="h-4 w-4" />
+        <Button size="sm" variant="ghost" className="text-destructive w-full">
+          <Trash className="h-4 w-4" />
           <span>Delete account</span>
         </Button>
       </DialogTrigger>

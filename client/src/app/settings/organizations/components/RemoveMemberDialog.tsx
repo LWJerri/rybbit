@@ -44,7 +44,7 @@ export function RemoveMemberDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="ghost" className="text-destructive">
+        <Button size="sm" variant="ghost" className="text-destructive w-full">
           <UserMinus className="h-4 w-4" />
           <span>Remove member</span>
         </Button>
