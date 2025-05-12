@@ -23,11 +23,12 @@ import {
   useUserOrganizations,
 } from "../../../api/admin/organizations";
 import { NoOrganization } from "../../../components/NoOrganization";
+import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 import { AddMemberDialog } from "./components/AddMemberDialog";
+import { DeleteMemberDialog } from "./components/DeleteMemberDialog";
 import { DeleteOrganizationDialog } from "./components/DeleteOrganizationDialog";
 import { EditOrganizationDialog } from "./components/EditOrganizationDialog";
 import { RemoveMemberDialog } from "./components/RemoveMemberDialog";
-import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
 
 // Types for our component
 export type Organization = {
@@ -140,11 +141,19 @@ function Organization({ org }: { org: UserOrganization }) {
                   {isOwner && (
                     <TableCell className="text-right">
                       {member.role !== "owner" && (
-                        <RemoveMemberDialog
-                          member={member}
-                          organizationId={org.id}
-                          onSuccess={handleRefresh}
-                        />
+                        <>
+                          <RemoveMemberDialog
+                            member={member}
+                            organizationId={org.id}
+                            onSuccess={handleRefresh}
+                          />
+
+                          <DeleteMemberDialog
+                            member={member}
+                            organizationId={org.id}
+                            onSuccess={handleRefresh}
+                          />
+                        </>
                       )}
                     </TableCell>
                   )}
