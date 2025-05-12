@@ -34,7 +34,7 @@ export function RemoveMemberDialog({
       });
 
       toast.success("Member removed successfully");
-      // setOpenDialog(false);
+      setOpenDialog(false);
       onSuccess();
     } catch (error: any) {
       toast.error(error.message || "Failed to remove member");
@@ -44,7 +44,11 @@ export function RemoveMemberDialog({
   };
 
   return (
-    <Dialog open={isOpenDialog} onOpenChange={setOpenDialog} modal>
+    <Dialog open={isOpenDialog} onOpenChange={(state) => {
+      setOpenDialog(state)
+
+      console.log(state)
+    }} modal>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Remove Member</DialogTitle>
